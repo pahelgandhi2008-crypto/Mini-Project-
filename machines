@@ -1,1 +1,458 @@
+Machines add html 
+
+{% extends "base.html" %}
+
+
+{% block title %}
+
+Add Machine | FixTrack
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1>Add Machine</h1>
+
+    <p>
+        Add a new machine to FixTrack.
+    </p>
+
+</div>
+
+
+<div class="form-card">
+
+    <form method="POST">
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label>Machine Number</label>
+
+                <input
+                    type="text"
+                    name="machine_number"
+                    placeholder="Example: MCH-001"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Machine Name</label>
+
+                <input
+                    type="text"
+                    name="machine_name"
+                    placeholder="Example: Flexo Printing Machine"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Department</label>
+
+                <input
+                    type="text"
+                    name="department"
+                    placeholder="Example: Printing"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Manufacturer</label>
+
+                <input
+                    type="text"
+                    name="manufacturer"
+                    placeholder="Example: Bobst"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Model</label>
+
+                <input
+                    type="text"
+                    name="model"
+                    placeholder="Example: FX-300"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Status</label>
+
+                <select name="status">
+
+                    <option value="Active">
+                        Active
+                    </option>
+
+                    <option value="Inactive">
+                        Inactive
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <a
+                href="{{ url_for('machines.machines') }}"
+                class="btn btn-secondary"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+            >
+                Save Machine
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
+
+
+Machines edit html
+
+{% extends "base.html" %}
+
+
+{% block title %}
+
+Edit Machine | FixTrack
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1>Edit Machine</h1>
+
+    <p>
+        Update machine details.
+    </p>
+
+</div>
+
+
+<div class="form-card">
+
+    <form method="POST">
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label>Machine Number</label>
+
+                <input
+                    type="text"
+                    name="machine_number"
+                    value="{{ machine['machine_number'] }}"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Machine Name</label>
+
+                <input
+                    type="text"
+                    name="machine_name"
+                    value="{{ machine['machine_name'] }}"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Department</label>
+
+                <input
+                    type="text"
+                    name="department"
+                    value="{{ machine['department'] }}"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Manufacturer</label>
+
+                <input
+                    type="text"
+                    name="manufacturer"
+                    value="{{ machine['manufacturer'] }}"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Model</label>
+
+                <input
+                    type="text"
+                    name="model"
+                    value="{{ machine['model'] }}"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Status</label>
+
+                <select name="status">
+
+                    <option
+                        value="Active"
+                        {% if machine["status"] == "Active" %}
+                            selected
+                        {% endif %}
+                    >
+                        Active
+                    </option>
+
+                    <option
+                        value="Inactive"
+                        {% if machine["status"] == "Inactive" %}
+                            selected
+                        {% endif %}
+                    >
+                        Inactive
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <a
+                href="{{ url_for('machines.machines') }}"
+                class="btn btn-secondary"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+            >
+                Update Machine
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
+
+
+
+
+Machines index html 
+
+{% extends "base.html" %}
+
+
+{% block title %}
+
+Machines | FixTrack
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header page-header-row">
+
+    <div>
+
+        <h1>Machines</h1>
+
+        <p>
+            Manage machines registered in FixTrack.
+        </p>
+
+    </div>
+
+
+    <a
+        href="{{ url_for('machines.add_machine') }}"
+        class="btn btn-primary"
+    >
+        Add Machine
+    </a>
+
+</div>
+
+
+<div class="content-card">
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Machine Number</th>
+                    <th>Machine Name</th>
+                    <th>Department</th>
+                    <th>Manufacturer</th>
+                    <th>Model</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% if machines %}
+
+                    {% for machine in machines %}
+
+                    <tr>
+
+                        <td>
+                            <strong>
+                                {{ machine["machine_number"] }}
+                            </strong>
+                        </td>
+
+                        <td>
+                            {{ machine["machine_name"] }}
+                        </td>
+
+                        <td>
+                            {{ machine["department"] }}
+                        </td>
+
+                        <td>
+                            {{ machine["manufacturer"] }}
+                        </td>
+
+                        <td>
+                            {{ machine["model"] }}
+                        </td>
+
+                        <td>
+
+                            {% if machine["status"] == "Active" %}
+
+                                <span class="status status-active">
+                                    Active
+                                </span>
+
+                            {% else %}
+
+                                <span class="status status-inactive">
+                                    Inactive
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td class="action-cell">
+
+                            <a
+                                href="{{ url_for('machines.edit_machine', machine_id=machine['id']) }}"
+                                class="action-link"
+                            >
+                                Edit
+                            </a>
+
+                            <a
+                                href="{{ url_for('machines.delete_machine', machine_id=machine['id']) }}"
+                                class="action-link danger"
+                                onclick="return confirm('Delete this machine?')"
+                            >
+                                Delete
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <tr>
+
+                        <td
+                            colspan="7"
+                            class="empty-table"
+                        >
+                            No machines added yet.
+                        </td>
+
+                    </tr>
+
+                {% endif %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
 
